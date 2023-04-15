@@ -48,7 +48,7 @@ if status is-interactive
   end
 
   # Load user override config
-  set -l FISHRC_PATH  /home/ark/.config/fish/override/fishrc.fish
+  set -l FISHRC_PATH  $HOME/.config/fish/customs/config.fish
   if test -e $FISHRC_PATH
     source $FISHRC_PATH
   end
