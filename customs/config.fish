@@ -1,16 +1,15 @@
 # User config
-set -l CUSTOMIZE_PATH        $HOME/.config/fish/override
-set -l CUSTOMIZE_CONF_PATH   $CUSTOMIZE_PATH/config.d
-set -l CUSTOMIZE_FUNC_PATH   $CUSTOMIZE_PATH/functions
+set -l CUSTOMIZED_CONF $HOME/.config/fish/customs/conf.d 
+set -l CUSTOMIZED_FUNC $HOME/.config/fish/customs/functions
 
-if test -d $CUSTOMIZE_CONF_PATH
-  for conf in $CUSTOMIZE_CONF_PATH/*.fish
+if test -d $CUSTOMIZED_CONF
+  for conf in $CUSTOMIZED_CONF/*.fish
     source $conf
   end
 end
 
-if test -d $CUSTOMIZE_FUNC_PATH
-  for func in $CUSTOMIZE_FUNC_PATH/*.fish
+if test -d $CUSTOMIZED_FUNC
+  for func in $CUSTOMIZED_FUNC/*.fish
     source $func
   end
 end

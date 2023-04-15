@@ -48,8 +48,8 @@ if status is-interactive
   end
 
   # Load user override config
-  set -l FISHRC_PATH  $HOME/.config/fish/customs/config.fish
-  if test -e $FISHRC_PATH
-    source $FISHRC_PATH
+  set -l CUSTOMIZE_PATH  $HOME/.config/fish/customs/config.fish
+  if test -e $CUSTOMIZE_PATH
+    source $CUSTOMIZE_PATH
   end
 end
