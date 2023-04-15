@@ -48,7 +48,7 @@ if status is-interactive
   end
 
   # Load user override config
-  set -l CUSTOMIZE_PATH  $HOME/.config/fish/customs/config.fish
+  set -l CUSTOMIZE_PATH  $HOME/.config/fish/customs/user.fish
   if test -e $CUSTOMIZE_PATH
     source $CUSTOMIZE_PATH
   end

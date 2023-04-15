@@ -13,3 +13,4 @@ if test -d $CUSTOMIZED_FUNC
     source $func
   end
 end
+
