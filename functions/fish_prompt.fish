@@ -5,7 +5,7 @@ function fish_prompt --description 'Write out the prompt'
   source ~/.config/fish/themes/mocha.fish
 
   # Set variables
-  set -l suffix    ' > '
+  set -l suffix    '>'
 
   # Print
   set_color -o
