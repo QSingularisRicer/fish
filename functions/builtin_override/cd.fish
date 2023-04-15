@@ -1,17 +1,36 @@
-function cd
-  set -l cd_status 0
-  # Import
-  set -l import_dir $HOME/.config/fish/functions/builtin_override/include/cd
-  for file in $import_dir/*.fish
-    source $file
+function __cd_explicit_path --description "Find explicit path"
+  string length -q "$argv"; or set argv "$HOME"
+  set argv (realpath $argv)
+  echo $argv
+end
+
+function __cd_remove_existed --description "Remove an existed item from a list"
+  set -l remove_item  "$argv[1]"
+  set -l from_list    "$argv[2]"
+  set -l tmp_list
+
+  set from_list (echo $from_list | sed "s`[[:space:]]\+` `g")
+  for item in (string split ' ' $from_list)
+    if not test $item = $remove_item
+      set -a tmp_list $item
+    end
   end
+  echo "$tmp_list"
+end
+
+function __cd_int_check --description "Check a variable is an integer or not"
+  if test (count $argv) -gt 1
+    echo "__cd_int_check: Superfluous argument"
+    return 1
+  end
+  string match -qr '^[0-9]+' "$argv"; and return 0; or return 1
+end
+
+function cd --description "Wrapper function for change directory"
+  set -l cd_status 0
 
   # Init cd_history in new shell
   set -q cd_history; or set -g cd_history
-
-  # Remove -- things
-  set argv (remove_shit $argv)
-
   # Parse arguments
   set -l options (fish_opt -s l -l list)
   set -a options (fish_opt -s i -l index --required-val)
@@ -33,7 +52,7 @@ function cd
     return 0
   else if set -q _flag_index  # If using index option
     set _flag_index (string trim -c ' ' $_flag_index)
-    if not is_integer $_flag_index
+    if not __cd_int_check $_flag_index
       echo "cd: $_flag_index is not an integer"
       return 1
     end
@@ -45,14 +64,14 @@ function cd
     set -l list_dir (string split ' ' $cd_history)
     set argv $list_dir[$_flag_index]
   else # default case
-    if not test $argv = '-'
-      set argv (set_explicit_path "$argv")
+    if not test "$argv" = '-'
+      set argv (__cd_explicit_path "$argv")
     else
-      __fish_cd -
+      builtin cd -
       set cd_status $status
       if test $cd_status -eq 0
         set -l dir (pwd)
-        set cd_history (remove_existed "$dir" "$cd_history")
+        set cd_history (__cd_remove_existed "$dir" "$cd_history")
         set cd_history "$dir $cd_history"
         set cd_history (string trim -c ' ' $cd_history)
       end
@@ -60,10 +79,10 @@ function cd
     end
   end
 
-  __fish_cd $argv
+  builtin cd $argv
   set cd_status $status
   if test $cd_status -eq 0
-    set cd_history (remove_existed "$argv" "$cd_history")
+    set cd_history (__cd_remove_existed "$argv" "$cd_history")
     set cd_history "$argv $cd_history"
     set cd_history (string trim -c ' ' $cd_history)
   end
