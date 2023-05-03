@@ -9,7 +9,7 @@ if status is-interactive
     set -g fish_greeting
     set -g fish_prompt_pwd_dir_length   0
     set -g fish_term24bit               1
-    set -g fish_prompt_theme            'mocha'
+    set -g singularis_prompt_theme      'mocha'
 
     # Aliases
     if command -sq nvim
