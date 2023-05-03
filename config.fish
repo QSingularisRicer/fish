@@ -1,4 +1,9 @@
 if status is-interactive
+    # Bootstrap
+    if not test -d $HOME/.config/fish/customs
+        fish $HOME/.config/fish/bootstrap/init.fish
+    end
+
     # Variables
     set -g fish_color_valid_path
     set -g fish_greeting
