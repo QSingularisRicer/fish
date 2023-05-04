@@ -1,4 +1,4 @@
-function __singularis_git_info
+function ___singularis_git_info
     set -f gitdir           $argv[1]
     set -f inside_gitdir    $argv[2]
     set -f bare_repo        $argv[3]    # no use
@@ -25,7 +25,7 @@ function __singularis_git_info
     echo $detached
 end
 
-function __singularis_worktree_status
+function ___singularis_worktree_status
     set -f sha              $argv[1]
     # Assume we are inside the worktree
     set -f git_status       (command git -c core.fsmonitor= status --porcelain -z -unormal | string split0)
@@ -41,7 +41,7 @@ function __singularis_worktree_status
     echo $untracked
 end
 
-function __singularis_git_prompt
+function singularis_git_prompt
     # Git is not installed, return 1
     if not command -sq git
         return
@@ -55,7 +55,7 @@ function __singularis_git_prompt
     set -f inside_workspace $repo_info[4]
     set -f HEAD_SHA         $repo_info[5]
 
-    set -f git_info         (__singularis_git_info $repo_info)
+    set -f git_info         (___singularis_git_info $repo_info)
     set -f current_branch   $git_info[1] # current branch
     set -f detached         $git_info[2]
     set -f git_label        ''
@@ -90,7 +90,7 @@ function __singularis_git_prompt
     end
 
     if test $inside_workspace = true
-        set -l worktree_status  (__singularis_worktree_status $HEAD_SHA)
+        set -l worktree_status  (___singularis_worktree_status $HEAD_SHA)
         set -l dirty_state      $worktree_status[1]
         set -l stagged_state    $worktree_status[2]
         set -l untracked_state  $worktree_status[3]

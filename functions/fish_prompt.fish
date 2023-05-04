@@ -22,6 +22,6 @@ function fish_prompt --description 'Write out the prompt'
     # Print
     printf '%s'         $__B$_osb$space$__G$__prompt_user$_at$__prompt_hostname$space$__RS$__M$__prompt_pwd$space$__B$_csb
     #fish_git_prompt
-    __singularis_git_prompt
+    singularis_git_prompt
     printf '\n%s'       $__C$space$suffix$space$__RS
 end
