@@ -14,8 +14,8 @@ function ___singularis_git_info
         if test -z $branch
             set detached true
             if set -q sha
-                # set branch (string shorten -m8 -c "" -- $sha)
-                set branch (string sub -s 1 -l 8 -- $sha) # compatible with older fish
+                set branch (string shorten -m8 -c "" -- $sha)
+                # set branch (string sub -s 1 -l 8 -- $sha) # compatible with older fish
             else
                 set branch unknown
             end
@@ -71,7 +71,7 @@ function ___singularis_worktree_prompt
 
     # Normal case
     if test $dirty_state = true
-        set worktree_prompt $worktree_prompt$__R$__osb$__dirty_char$__csb
+        set worktree_prompt $worktree_prompt$__Y$__osb$__dirty_char$__csb
     else
         set worktree_prompt $worktree_prompt$__B$__osb$__untracked_char$__csb
     end
@@ -80,13 +80,9 @@ end
 
 function ___singularis_relative_upstream
     set count (command git rev-list --count --left-right @{upstream}...HEAD 2>/dev/null | string replace \t " ")
-    echo > $HOME/fish.log
-    echo $count >> $HOME/fish.log
-    echo $count | read -l behind ahead
-    echo $behind >> $HOME/fish.log
-    echo $ahead >> $HOME/fish.log
     switch "$count"
         case ''     # no upstream
+            echo ''
         case '0 0'  # equal upstream
             echo ''
         case '0 *'  # ahead of upstream
