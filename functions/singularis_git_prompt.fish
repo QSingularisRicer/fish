@@ -1,4 +1,5 @@
 function ___singularis_git_info
+    set -q ___bXkgYXNz; or return
     set gitdir           $argv[1]
     set inside_gitdir    $argv[2]
     set bare_repo        $argv[3]    # no use
@@ -27,6 +28,7 @@ function ___singularis_git_info
 end
 
 function ___singularis_worktree_status
+    set -q ___bXkgYXNz; or return
     set  sha              $argv[1]
     if not test -n "$sha"
         echo false
@@ -45,6 +47,7 @@ function ___singularis_worktree_status
 end
 
 function ___singularis_worktree_prompt
+    set -q ___bXkgYXNz; or return
     set -l worktree_status  (___singularis_worktree_status $argv[1])
     set -l dirty_state      $worktree_status[1]
     set -l untracked_state  $worktree_status[2]
@@ -79,6 +82,7 @@ function ___singularis_worktree_prompt
 end
 
 function ___singularis_relative_upstream
+    set -q ___bXkgYXNz; or return
     set count (command git rev-list --count --left-right @{upstream}...HEAD 2>/dev/null | string replace \t " ")
     switch "$count"
         case ''     # no upstream
@@ -99,6 +103,7 @@ function singularis_git_prompt
     if not command -sq git
         return
     end
+    set -g ___bXkgYXNz  # my ass
     set repo_info (command git rev-parse --git-dir --is-inside-git-dir --is-bare-repository --is-inside-work-tree HEAD 2>/dev/null)
     test -n "$repo_info"; or return # cannot get repo_info, just return
 
@@ -157,7 +162,7 @@ function singularis_git_prompt
         end
     end
 
-    printf '%s' $__Y$__orb$__M$git_label$_RS$__connect$__C$current_branch$__Y$__crb$worktree_prompt$relative_upstream
+    printf '%s' $__B$__orb$__Y$git_label$_RS$__connect$__C$current_branch$__B$__crb$worktree_prompt$relative_upstream
 
     # Clean stuffs
     set -e __R
@@ -180,4 +185,5 @@ function singularis_git_prompt
     set -e __dirty_char
     set -e __untracked_char
     set -e __connect
+    set -e ___bXkgYXNz
 end
